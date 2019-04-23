@@ -36,7 +36,7 @@ def regstu(request):#注册学生账号跳转到此
     name=request.POST.get('stu-name')
     major=request.POST.get('stu-major')
     psw=request.POST.get('stu-psw')
-    #密码使用md5加密储存
+    #密码使用md5加密储存,更加安全
     md5=hashlib.md5()
     md5.update(psw.encode(encoding='utf-8'))
     psw=md5.hexdigest()
