@@ -516,7 +516,8 @@
             </div>
         </div>
 
-</div>
+
+
 </footer>
 </div>
 
@@ -576,7 +577,9 @@
                                 <input id="stu-id" name="stu-id" type="text" value="" placeholder="输入你的学号" required>
                                 <text class="wrongtext" id="ajaxid"></text>
                                 <input id="stu-name" name="stu-name" type="text" value="" placeholder="输入你的姓名" required>
+                                <text class="wrongtext" id="wrong-name"></text>
                                 <input id="stu-major" type="text" value="" placeholder="输入你的专业" required>
+                                <text class="wrongtext" id="wrong-major"></text>
                                 <input id="psw" name="psw" type="password" value="" placeholder="输入密码" required>
                                 <input id="psw2" name="psw2" type="password" value="" placeholder="确认密码" required>
                                 <div class="wrongtext" id="psw-wrong"></div>
@@ -642,11 +645,14 @@
                         <div class="login-right2">
                             <form>
                                 <h3>注册教师账号</h3>
-                                <input type="text" value="" placeholder="输入你的工号" required>
-                                <input type="text" value="" placeholder="输入你的姓名" required>
-                                <input type="password" value="" placeholder="输入密码" required>
-                                <input type="password" value="" placeholder="确认密码" required>
-                                <input type="submit" value="注册账号">
+                                <input id='teacher-id' type="text" value="" placeholder="输入你的工号" required>
+                                <text class="wrongtext" id="ajaxid2"></text>
+                                <input id='teacher-name' type="text" value="" placeholder="输入你的姓名" required>
+                                <text class="wrongtext" id="wrong-name2"></text>
+                                <input id='tpsw' type="password" value="" placeholder="输入密码" required>
+                                <input id='tpsw2' type="password" value="" placeholder="确认密码" required>
+                                <text class="wrongtext" id="wrongpsw2"></text>
+                                <input type="submit" value="注册账号" onclick="return ifok2()">
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -683,6 +689,11 @@
 <script>
     var stuflag1=0;
     var stuflag2=0;
+    var stuflag3=0;
+    var stuflag4=0;
+    var tflag1=0;
+    var tflag2=0;
+    var tflag3=0;
     $(function () { // 页面装载执行
         $("#turn2signup").click(function () { // 为ID为toa的标签绑定click事件
             //$("#tob").click(); // 触发ID为tob标签的click事件
@@ -699,7 +710,38 @@
         });
     });
 
+{#########学生注册js控制#############}
+    $("#stu-name").focus(function () {
+        $("#wrong-name").text("")
+    });
+    $("#stu-name").blur(function () {
+        if($("#stu-name").val()=='')
+        {
+             $("#wrong-name").text("*姓名不能为空");
+             $("#wrong-name").css("color", "#e98a42");
+            stuflag3=0;
+        }
+        else
+        {
+            stuflag3=1;
+        }
+    });
 
+    $("#stu-major").focus(function () {
+        $("#wrong-major").text("")
+    });
+    $("#stu-major").blur(function () {
+        if($("#stu-major").val()=='')
+        {
+             $("#wrong-major").text("*专业不能为空");
+             $("#wrong-major").css("color", "#e98a42");
+            stuflag4=0;
+        }
+        else
+        {
+            stuflag4=1
+        }
+    });
     $("#psw2").focus(function () {
         $("#psw-wrong").text("")
     });
@@ -748,6 +790,12 @@
                     $("#ajaxid").css("color", "#48cfc1");
                     stuflag1=1
                 }
+                if($('#stu-id').val()=='')
+                {
+                    $("#ajaxid").text("*学号不能为空");
+                    $("#ajaxid").css("color", "#e98a42");
+                    stuflag1=0;
+                }
             }
         })
 
@@ -777,9 +825,116 @@
     }
 
     function ifok() {
-         if(stuflag1==stuflag2 && stuflag2==1)
+         if(stuflag1+stuflag2+stuflag3+stuflag4==4)
         {
             regstu();
+            return false;
+        }
+         return false;
+    }
+
+    {#########教师注册js控制#############}
+    $("#teacher-id").focus(function () {
+        $("#ajaxid2").text("")
+    });
+    $("#teacher-id").blur(function () {
+        $.ajax({
+            url: "/checkteacher",
+            data: {"teacher-id": $('#teacher-id').val()},
+            type: "POST",
+            dataType: "TEXT",
+            success: function (data) {
+                var state = JSON.parse(data);
+                if (state.ifok == "false") {
+                    $("#ajaxid2").text("*该工号已被注册");
+                    $("#ajaxid2").css("color", "#e98a42");
+                    tflag1=0;
+                }
+                if (state.ifok == "true"){
+                    $("#ajaxid2").text("可以注册");
+                    $("#ajaxid2").css("color", "#48cfc1");
+                    tflag1=1
+                }
+                if($("#teacher-id").val()=='')
+                {
+                    $("#ajaxid2").text("*工号不能为空");
+                    $("#ajaxid2").css("color", "#e98a42");
+                    tflag1=0;
+                }
+            }
+        })
+
+    });
+     $("#teacher-name").focus(function () {
+        $("#wrong-name2").text("");
+    });
+    $("#teacher-name").blur(function () {
+        if($("#teacher-name").val()=='')
+        {
+             $("#wrong-name2").text("*姓名不能为空");
+            tflag3=0;
+        }
+        else
+        {
+            tflag3=1;
+        }
+    });
+
+
+    $("#tpsw").focus(function () {
+        $("#wrongpsw2").text("")
+    });
+    $("#tpsw2").focus(function () {
+        $("#wrongpsw2").text("")
+    });
+    function jgpsw2(){
+        if ($("#tpsw").val() != $("#tpsw2").val()) {
+            $("#wrongpsw2").text("*两次输入不一致")
+            $("#wrongpsw2").css("color", "#e98a42");
+            tflag2=0;
+        } if ($("#tpsw").val() == $("#tpsw2").val() && $("#tpsw").val()!='')  {
+            $("#wrongpsw2").text("")
+            tflag2=1;
+        }
+
+        if ($("#tpsw").val()=='' && $("#tpsw2").val()=='')  {
+            $("#wrongpsw2").text("*密码不能为空")
+            $("#wrongpsw2").css("color", "#e98a42");
+            tflag2=0;
+        }
+    }
+    $("#tpsw2").blur(function () {
+        jgpsw2()
+    });
+    $("#tpsw").blur(function () {
+      jgpsw2()
+    });
+     function regteacher() {
+        $.ajax({
+            url: "/regteacher",
+            data: {"teacher-id": $('#teacher-id').val(),
+                   "teacher-name":$('#teacher-name').val(),
+                    "teacher-psw" : $('#tpsw').val()
+            },
+            type: "POST",
+            dataType: "TEXT",
+            success: function (data) {
+                var state = JSON.parse(data);
+                if (state.ifok == "false") {
+                    alert("注册失败！");
+                }
+                if (state.ifok == "true"){
+                    alert("注册成功！");
+                    $('#myModal7').modal('hide');
+                    setTimeout("$('#myModal6').modal();", 400);
+                }
+            }
+        })
+    }
+    function ifok2() {
+        if(tflag1+tflag2+tflag3==3)
+        {
+            regteacher();
             return false;
         }
          return false;

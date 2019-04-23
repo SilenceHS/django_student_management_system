@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^$',view.hello),
     url(r'^login$',view.login),
     url(r'^checkstu',view.checkstu),
-    url(r'^regstu',view.regstu)
+    url(r'^checkteacher',view.checkteacher),
+    url(r'^regstu',view.regstu),
+    url(r'^regteacher',view.regteacher)
 ]
