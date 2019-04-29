@@ -17,10 +17,11 @@ from django.conf.urls import url
 from . import view
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    url(r'^$',view.hello),
-    url(r'^login$',view.login),
+    url(r'^$|^index.html$',view.hello),
+    url(r'^loginstu',view.loginstu),
     url(r'^checkstu',view.checkstu),
     url(r'^checkteacher',view.checkteacher),
     url(r'^regstu',view.regstu),
-    url(r'^regteacher',view.regteacher)
+    url(r'^regteacher',view.regteacher),
+    url(r'^loginteacher',view.loginteacher)
 ]

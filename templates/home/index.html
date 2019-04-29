@@ -538,16 +538,16 @@
                 <div class="login-grids">
                     <div>
                         <div class="login-right">
-                            <form action="/login">
+                            <form>
                                 <h3>登录你的学生账号</h3>
-                                <input type="text" name="stu-id" value="" placeholder="输入你的学号" equired>
-                                <input type="password" name="stu-psw" value="" placeholder="密码" required>
+                                <input id='stuid' type="text" name="stu-id" value="" placeholder="输入你的学号" equired>
+                                <input id='stupsw' type="password" name="stu-psw" value="" placeholder="密码" required>
                                 <h4><a href="#">忘记密码？</a> / <a href="#" id="turn2signup">注册学生账号</a></h4>
                                 <div class="single-bottom">
                                     <input type="checkbox" id="brand" value="">
                                     <label for="brand"><span></span>记住账号</label>
                                 </div>
-                                <input type="submit" value="登录">
+                                <input type="submit" value="登录" onclick="return loginstu()">
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -562,19 +562,19 @@
 
 <!-- signup -->
 <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document" style="width:400px">
         <div class="modal-content modal-info">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeb"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body modal-spa">
-                <div class="login-grids">
-                    <div class="login">
+                <div class="login-grids" >
+                    <div class="login" >
                         <div class="login-right">
                             <form name="signup-stu" action="/reg-stu">
                                 <h3>注册学生账号</h3>
-                                <input id="stu-id" name="stu-id" type="text" value="" placeholder="输入你的学号" required>
+                                <input  id="stu-id" name="stu-id" type="text" value="" placeholder="输入你的学号" required>
                                 <text class="wrongtext" id="ajaxid"></text>
                                 <input id="stu-name" name="stu-name" type="text" value="" placeholder="输入你的姓名" required>
                                 <text class="wrongtext" id="wrong-name"></text>
@@ -611,14 +611,14 @@
                         <div class="login-right2">
                             <form>
                                 <h3>登录你的教师账号</h3>
-                                <input type="text" value="" placeholder="输入你的工号" equired>
-                                <input type="password" value="" placeholder="密码" required>
+                                <input id="teacherid" type="text" value="" placeholder="输入你的工号" equired>
+                                <input id="teacherpsw" type="password" value="" placeholder="密码" required>
                                 <h4><a href="#">忘记密码？</a> / <a href="#" id="turn2signup2">注册教师账号</a></h4>
                                 <div class="single-bottom">
                                     <input type="checkbox" id="brand" value="">
                                     <label for="brand"><span></span>记住账号</label>
                                 </div>
-                                <input type="submit" value="登录">
+                                <input type="submit" value="登录" onclick="return loginteacher()">
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -633,7 +633,7 @@
 
 <!-- signup -->
 <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document" style="width:400px">
         <div class="modal-content modal-info">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeb"><span
@@ -642,7 +642,7 @@
             <div class="modal-body modal-spa">
                 <div class="login-grids2">
                     <div>
-                        <div class="login-right2">
+                        <div class="login-right2" >
                             <form>
                                 <h3>注册教师账号</h3>
                                 <input id='teacher-id' type="text" value="" placeholder="输入你的工号" required>
@@ -939,8 +939,49 @@
         }
          return false;
     }
-</script>
+    function loginstu() {
+        $.ajax({
+            url: "/loginstu",
+            data: {"stu-id": $('#stuid').val(),
+                    "stu-psw" : $('#stupsw').val()
+            },
+            type: "POST",
+            dataType: "TEXT",
+            success: function (data) {
+                var state = JSON.parse(data);
+                if (state.ifok == "false") {
+                    alert("登录失败！账号或密码错误");
+                }
+                if (state.ifok == "true"){
+                    alert("登录成功")
+                    window.location.href='http://www.baidu.com'
+                }
+            }
+        })
+        return false;
+    }
 
+    function loginteacher() {
+        $.ajax({
+            url: "/loginteacher",
+            data: {"teacher-id": $('#teacherid').val(),
+                    "teacher-psw" : $('#teacherpsw').val()
+            },
+            type: "POST",
+            dataType: "TEXT",
+            success: function (data) {
+                var state = JSON.parse(data);
+                if (state.ifok == "false") {
+                    alert("登录失败！账号或密码错误");
+                }
+                if (state.ifok == "true"){
+                    alert("登录成功")
+                    window.location.href='http://www.qq.com'
+                }
+            }
+        })
+        return false;
+    }
+</script>
 </body>
 </html>
-

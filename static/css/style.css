@@ -1635,7 +1635,7 @@ h1, h2, h3, h4, h5, h6, figure {
 
 /*-- login --*/
 .login-right{
-	/*width:50%;内部宽度*/
+	/*width:50%;*/
 }
 .login-right h3{
     color: #e98a42;
