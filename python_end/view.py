@@ -29,7 +29,9 @@ def loginstu(request):  # 登录
     c = cursor.fetchall()
     if len(c) != 0:
         result['ifok'] = 'true'
-    return HttpResponse(json.dumps(result))
+        response=HttpResponse(json.dumps(result))
+        response.set_cookie('username', 'sb110',3600)
+    return response
 
 
 def loginteacher(request):  # 登录

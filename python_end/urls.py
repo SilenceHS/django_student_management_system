@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from . import view
+from teacher import teacher_views
+from student import student_views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     url(r'^$|^index.html$',view.hello),
@@ -23,5 +25,7 @@ urlpatterns = [
     url(r'^checkteacher',view.checkteacher),
     url(r'^regstu',view.regstu),
     url(r'^regteacher',view.regteacher),
-    url(r'^loginteacher',view.loginteacher)
+    url(r'^loginteacher',view.loginteacher),
+    url(r'^teacher$',teacher_views.index),
+    url(r'^student$',student_views.index)
 ]

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'python_end',
+    'teacher',
+    'student'
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,5 @@ STATICFILES_DIRS = (
     ('fonts', os.path.join(STATIC_ROOT, 'fonts').replace('\\', '/')),
     ('js', os.path.join(STATIC_ROOT, 'js').replace('\\', '/')),
 )
+
+LOGIN_URL = 'home/index.html'
