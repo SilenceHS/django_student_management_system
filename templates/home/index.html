@@ -580,8 +580,8 @@
                                 <text class="wrongtext" id="wrong-name"></text>
                                 <input id="stu-major" type="text" value="" placeholder="输入你的专业" required>
                                 <text class="wrongtext" id="wrong-major"></text>
-                                <input id="psw" name="psw" type="password" value="" placeholder="输入密码" required>
-                                <input id="psw2" name="psw2" type="password" value="" placeholder="确认密码" required>
+                                <input id="psw" name="psw" type="password" value="" placeholder="输入密码(不小于6位)" maxlength="16" required>
+                                <input id="psw2" name="psw2" type="password" value="" placeholder="确认密码" maxlength="16" required>
                                 <div class="wrongtext" id="psw-wrong"></div>
                                 <input type="submit" value="注册账号" id="reg-stu" onclick="return ifok()">
                             </form>
@@ -649,7 +649,7 @@
                                 <text class="wrongtext" id="ajaxid2"></text>
                                 <input id='teacher-name' type="text" value="" placeholder="输入你的姓名" required>
                                 <text class="wrongtext" id="wrong-name2"></text>
-                                <input id='tpsw' type="password" value="" placeholder="输入密码" required>
+                                <input id='tpsw' type="password" value="" placeholder="输入密码(不小于6位)" required>
                                 <input id='tpsw2' type="password" value="" placeholder="确认密码" required>
                                 <text class="wrongtext" id="wrongpsw2"></text>
                                 <input type="submit" value="注册账号" onclick="return ifok2()">
@@ -753,12 +753,17 @@
             $("#psw-wrong").text("*两次输入不一致")
             $("#psw-wrong").css("color", "#e98a42");
             stuflag2=0;
-        } if ($("#psw").val() == $("#psw2").val() && $("#psw").val()!='')  {
+        } if ($("#psw").val() == $("#psw2").val() && $("#psw").val()!='' && $("#psw").val().length>=6)  {
             $("#psw-wrong").text("")
             stuflag2=1;
         }
         if ($("#psw").val()=='' && $("#psw2").val()=='')  {
             $("#psw-wrong").text("*密码不能为空")
+            $("#psw-wrong").css("color", "#e98a42");
+            stuflag2=0;
+        }
+        if ($("#psw").val().length<6)  {
+            $("#psw-wrong").text("*密码不能小于6位")
             $("#psw-wrong").css("color", "#e98a42");
             stuflag2=0;
         }
@@ -892,13 +897,18 @@
             $("#wrongpsw2").text("*两次输入不一致")
             $("#wrongpsw2").css("color", "#e98a42");
             tflag2=0;
-        } if ($("#tpsw").val() == $("#tpsw2").val() && $("#tpsw").val()!='')  {
+        } if ($("#tpsw").val() == $("#tpsw2").val() && $("#tpsw").val()!=''&& $("#tpsw").val().length>=6)  {
             $("#wrongpsw2").text("")
             tflag2=1;
         }
 
         if ($("#tpsw").val()=='' && $("#tpsw2").val()=='')  {
             $("#wrongpsw2").text("*密码不能为空")
+            $("#wrongpsw2").css("color", "#e98a42");
+            tflag2=0;
+        }
+        if ($("#tpsw").val().length<6)  {
+            $("#wrongpsw2").text("*密码不能小于6位")
             $("#wrongpsw2").css("color", "#e98a42");
             tflag2=0;
         }

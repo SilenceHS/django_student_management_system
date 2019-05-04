@@ -129,10 +129,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 STATICFILES_DIRS = (
-    ('css', os.path.join(STATIC_ROOT, 'css').replace('\\', '/')),
-    ('images', os.path.join(STATIC_ROOT, 'images').replace('\\', '/')),
-    ('fonts', os.path.join(STATIC_ROOT, 'fonts').replace('\\', '/')),
-    ('js', os.path.join(STATIC_ROOT, 'js').replace('\\', '/')),
+    ('css', os.path.join(STATIC_ROOT, 'home/css').replace('\\', '/')),
+    ('images', os.path.join(STATIC_ROOT, 'home/images').replace('\\', '/')),
+    ('fonts', os.path.join(STATIC_ROOT, 'home/fonts').replace('\\', '/')),
+    ('js', os.path.join(STATIC_ROOT, 'home/js').replace('\\', '/')),
+
+    ('css2', os.path.join(STATIC_ROOT, 'teacher/css').replace('\\', '/')),
+    ('img2', os.path.join(STATIC_ROOT, 'teacher/img').replace('\\', '/')),
+    ('fonts2', os.path.join(STATIC_ROOT, 'teacher/fonts').replace('\\', '/')),
+    ('js2', os.path.join(STATIC_ROOT, 'teacher/js').replace('\\', '/')),
+    ('plugins2', os.path.join(STATIC_ROOT, 'teacher/plugins').replace('\\', '/')),
 )
 
 LOGIN_URL = 'home/index.html'

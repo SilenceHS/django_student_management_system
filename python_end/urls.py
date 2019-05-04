@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.urls import path,include
 from . import view
 from teacher import teacher_views
 from student import student_views
@@ -26,6 +27,6 @@ urlpatterns = [
     url(r'^regstu',view.regstu),
     url(r'^regteacher',view.regteacher),
     url(r'^loginteacher',view.loginteacher),
-    url(r'^teacher$',teacher_views.index),
+    path('teacher/',include('teacher.urls')),
     url(r'^student$',student_views.index)
 ]

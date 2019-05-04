@@ -24,14 +24,15 @@ def loginstu(request):  # 登录
     print(a)
     print(b)
     cursor = connection.cursor()
-    sql = "select ID from Student where ID='{0}' and Password='{1}'".format(a, b)
+    sql = "select * from Student where ID='{0}' and Password='{1}'".format(a, b)
     cursor.execute(sql)
     c = cursor.fetchall()
     if len(c) != 0:
         result['ifok'] = 'true'
-        response=HttpResponse(json.dumps(result))
-        response.set_cookie('username', 'sb110',3600)
-    return response
+        request.session['stuid'] = c[0][0]
+        request.session['stuname'] = c[0][1]
+        #request.session.set_expiry(60)
+    return HttpResponse(json.dumps(result))
 
 
 def loginteacher(request):  # 登录
@@ -43,10 +44,14 @@ def loginteacher(request):  # 登录
     print(a)
     print(b)
     cursor = connection.cursor()
-    sql = "select ID from Teacher where ID='{0}' and Password='{1}'".format(a, b)
+    sql = "select * from Teacher where ID='{0}' and Password='{1}'".format(a, b)
     cursor.execute(sql)
     c = cursor.fetchall()
+    print(c)
     if len(c) != 0:
+        request.session['teacherid']=c[0][0]
+        request.session['teachername'] = c[0][1]
+        #request.session.set_expiry(60)
         result['ifok'] = 'true'
     return HttpResponse(json.dumps(result))
 
