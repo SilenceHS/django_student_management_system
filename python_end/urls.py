@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^regteacher',view.regteacher),
     url(r'^loginteacher',view.loginteacher),
     path('teacher/',include('teacher.urls')),
-    url(r'^student$',student_views.index)
+    path('student/',include('student.urls')),
 ]
