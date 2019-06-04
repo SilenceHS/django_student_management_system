@@ -5,13 +5,20 @@ import json
 # Create your views here.
 from python_end.Course import Course
 
+#打包返回教师信息的方法
+def get_teacher_dict(request):
+    teacherid = request.session.get('teacherid')
+    teachername = request.session.get('teachername')
+    course = getAllCourse(request)
+    return {'teacherid':teacherid,'teachername':teachername,"courses":course}
+
 
 def index(request):
     teacherid=request.session.get('teacherid')
     teachername=request.session.get('teachername')
     course=getAllCourse(request)
     if teacherid:
-        return render(request,'teacher/teacherhome.html',{'teacherid':teacherid,'teachername':teachername,"courses":course})
+        return render(request,'teacher/teacherhome.html',get_teacher_dict(request))
     else:
         return redirect('/index.html')
 def getAllCourse(request):
@@ -26,4 +33,6 @@ def getAllCourse(request):
     for i in c:
         courses.append(Course(i[0],i[2]))
     return courses
+def addcourseview(request):
+    return render(request, 'teacher/addcourse.html',get_teacher_dict(request))
 

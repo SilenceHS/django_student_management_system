@@ -56,7 +56,7 @@ $(document).ready(function() {
 
     //------------- File input styling -------------//
     $(":file").filestyle({
-    	buttonText: "Select file",
+    	buttonText: "选择文件",
     	classButton: "btn btn-primary",
     	classInput: "form-control file-upload",
     	classIcon: "fa-plus-sign"

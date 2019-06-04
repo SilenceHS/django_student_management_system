@@ -762,7 +762,45 @@
             <!-- Page start here ( usual with .row ) -->
             <div class="row">
                 <!-- Start .row -->
-                <div style="padding-top:15%" align="center"><img src="/static/img2/avatars/empty.png"><br/>空空如也~
+                <div class="col-lg-12">
+                            <!-- Start col-lg-12 -->
+                            <div class="panel panel-default toggle">
+                                <!-- Start .panel -->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">添加课程</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal group-border hover-stripped" role="form" id="validate">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">课程名称</label>
+                                            <div class="col-lg-5">
+                                                <input type="text" class="form-control required">
+                                            </div>
+                                        </div>
+
+                                        <!-- End .form-group  -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">课程学生名单</label>
+                                            <div class="col-lg-10">
+                                                <input type="file" name="file" id="file">
+                                                <div>名单格式:两列,--学号--姓名--,不包含列名</div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- End .form-group  -->
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-2">
+                                                <button class="btn btn-default ml15" type="submit">保存</button>
+                                            </div>
+                                        </div>
+                                        <!-- End .form-group  -->
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- End .panel -->
+                        </div>
+                        <!-- End col-lg-12 -->
                     </div>
                 {#                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">#}
                 {#                            <div class="carousel-tile carousel vertical slide">#}
@@ -1202,45 +1240,46 @@
   <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <script type="text/javascript" src="/static/js2/libs/respond.min.js"></script>
 <![endif]-->
+
 <!-- Bootstrap plugins -->
-<script src="/static/js2/bootstrap/bootstrap.js"></script>
-<!-- Core plugins ( not remove ever) -->
-<!-- Handle responsive view functions -->
-<script src="/static/js2/jRespond.min.js">
-</script>
-<!-- Custom scroll for sidebars,tables and etc. -->
-<script src="/static/plugins2/core/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="/static/plugins2/core/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
-<!-- Resize text area in most pages -->
-<script src="/static/plugins2/forms/autosize/jquery.autosize.js"></script>
-<!-- Proivde quick search for many widgets -->
-<script src="/static/plugins2/core/quicksearch/jquery.quicksearch.js"></script>
-<!-- Bootbox confirm dialog for reset postion on panels -->
-<script src="/static/plugins2/ui/bootbox/bootbox.js"></script>
-<!-- Other plugins ( load only nessesary plugins for every page) -->
-<script src="/static/plugins2/charts/flot/jquery.flot.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.pie.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.resize.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.time.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.growraf.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.categories.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.stack.js"></script>
-<script src="/static/plugins2/charts/flot/jquery.flot.tooltip.min.js"></script>
-<script src="/static/plugins2/charts/flot/date.js"></script>
-<script src="/static/plugins2/charts/sparklines/jquery.sparkline.js"></script>
-<script src="/static/plugins2/charts/pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="/static/plugins2/forms/icheck/jquery.icheck.js"></script>
-<script src="/static/plugins2/forms/tags/jquery.tagsinput.min.js"></script>
-<script src="/static/plugins2/forms/tinymce/tinymce.min.js"></script>
-<script src="/static/plugins2/misc/highlight/highlight.pack.js"></script>
-<script src="/static/plugins2/misc/countTo/jquery.countTo.js"></script>
-<script src="/static/plugins2/ui/weather/skyicons.js"></script>
-<script src="/static/plugins2/ui/notify/jquery.gritter.js"></script>
-<script src="/static/plugins2/ui/calendar/fullcalendar.js"></script>
-<script src="/static/js2/jquery.sprFlat.js"></script>
-<script src="/static/js2/app.js"></script>
-<script src="/static/js2/pages/dashboard.js"></script>
-<script type="text/javascript">
-</script>
+        <script src="/static/js2/bootstrap/bootstrap.js"></script>
+        <!-- Core plugins ( not remove ever) -->
+        <!-- Handle responsive view functions -->
+        <script src="/static/js2/jRespond.min.js"></script>
+        <!-- Custom scroll for sidebars,tables and etc. -->
+        <script src="/static/plugins2/core/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="/static/plugins2/core/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
+        <!-- Resize text area in most pages -->
+        <script src="/static/plugins2/forms/autosize/jquery.autosize.js"></script>
+        <!-- Proivde quick search for many widgets -->
+        <script src="/static/plugins2/core/quicksearch/jquery.quicksearch.js"></script>
+        <!-- Bootbox confirm dialog for reset postion on panels -->
+        <script src="/static/plugins2/ui/bootbox/bootbox.js"></script>
+        <!-- Other plugins ( load only nessesary plugins for every page) -->
+        <script src="/static/plugins2/core/moment/moment.min.js"></script>
+        <script src="/static/plugins2/charts/sparklines/jquery.sparkline.js"></script>
+        <script src="/static/plugins2/charts/pie-chart/jquery.easy-pie-chart.js"></script>
+        <script src="/static/plugins2/forms/icheck/jquery.icheck.js"></script>
+        <script src="/static/plugins2/forms/tags/jquery.tagsinput.min.js"></script>
+        <script src="/static/plugins2/forms/tinymce/tinymce.min.js"></script>
+        <script src="/static/plugins2/forms/switch/jquery.onoff.min.js"></script>
+        <script src="/static/plugins2/forms/maxlength/bootstrap-maxlength.js"></script>
+        <script src="/static/plugins2/forms/bootstrap-filestyle/bootstrap-filestyle.js"></script>
+        <script src="/static/plugins2/forms/color-picker/spectrum.js"></script>
+        <script src="/static/plugins2/forms/daterangepicker/daterangepicker.js"></script>
+        <script src="/static/plugins2/forms/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/static/plugins2/forms/globalize/globalize.js"></script>
+        <script src="/static/plugins2/forms/maskedinput/jquery.maskedinput.js"></script>
+        <script src="/static/plugins2/forms/select2/select2.js"></script>
+        <script src="/static/plugins2/forms/dual-list-box/jquery.bootstrap-duallistbox.js"></script>
+        <script src="/static/plugins2/forms/password/jquery-passy.js"></script>
+        <script src="/static/plugins2/forms/checkall/jquery.checkAll.js"></script>
+        <script src="/static/plugins2/forms/validation/jquery.validate.js"></script>
+        <script src="/static/plugins2/forms/validation/additional-methods.min.js"></script>
+        <script src="/static/plugins2/misc/highlight/highlight.pack.js"></script>
+        <script src="/static/plugins2/misc/countTo/jquery.countTo.js"></script>
+        <script src="/static/js2/jquery.sprFlat.js"></script>
+        <script src="/static/js2/app.js"></script>
+        <script src="/static/js2/pages/form-validation.js"></script>
 </body>
 </html>

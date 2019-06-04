@@ -5,7 +5,7 @@ $('.select2').select2({placeholder: 'Select state'});
 
 //------------- File input styling -------------//
 $(":file").filestyle({
-	buttonText: "Select file",
+	buttonText: "选择文件",
 	classButton: "btn btn-primary",
 	classInput: "form-control file-upload",
 	classIcon: "fa-plus-sign"
@@ -97,8 +97,8 @@ $("#validate").validate({
 	    },
 	    file: { 
 			required: true, 
-			accept: "png|jpeg|jpg|gif", 
-			filesize: 2048  
+			accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+			filesize: 4096
 		},
 		agree: "required"
 	},
@@ -114,7 +114,7 @@ $("#validate").validate({
 		},
 		agree: "Please accept our policy",
 		textarea: "Write some info for you",
-		file: "File must be JPG, GIF or PNG, less than 2MB"
+		file: "文件格式为xlsx,大小不超过2MB"
 	},
 	highlight: function(element) {
 		if ($(element).offsetParent().parent().hasClass('form-group')) {
