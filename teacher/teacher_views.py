@@ -1,6 +1,9 @@
+import os
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db import connection
+import openpyxl
 import json
 # Create your views here.
 from python_end.Course import Course
@@ -12,6 +15,7 @@ def get_teacher_dict(request):
     course = getAllCourse(request)
     return {'teacherid':teacherid,'teachername':teachername,"courses":course}
 
+######################################
 
 def index(request):
     teacherid=request.session.get('teacherid')
@@ -33,6 +37,15 @@ def getAllCourse(request):
     for i in c:
         courses.append(Course(i[0],i[2]))
     return courses
+def addcourseaction(request):
+    file=request.FILES.get("file", None)
+    wb = openpyxl.load_workbook(file)
+    sheet=wb.active
+    for i in range(1,sheet.max_row+1):
+        print(sheet.cell(i,1).value,sheet.cell(i,2).value)
+
 def addcourseview(request):
     return render(request, 'teacher/addcourse.html',get_teacher_dict(request))
+
+
 

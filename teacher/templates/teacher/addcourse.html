@@ -770,11 +770,11 @@
                                     <h3 class="panel-title">添加课程</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal group-border hover-stripped" role="form" id="validate">
+                                    <form enctype="multipart/form-data" method="post" action="addcourse.action" class="form-horizontal group-border hover-stripped" role="form" id="validate">
                                         <div class="form-group">
                                             <label class="col-lg-2 control-label">课程名称</label>
                                             <div class="col-lg-5">
-                                                <input type="text" class="form-control required">
+                                                <input type="text" name="classname" class="form-control required">
                                             </div>
                                         </div>
 
