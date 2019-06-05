@@ -52,7 +52,6 @@ def addcourseaction(request):
 def coursedetailview(request):
     request.GET['id']
     return render()
-021
 def addcourseview(request):
     return render(request, 'teacher/addcourse.html',get_teacher_dict(request))
 
