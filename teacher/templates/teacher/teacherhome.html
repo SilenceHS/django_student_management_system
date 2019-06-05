@@ -314,7 +314,7 @@
                 <a href="#"> 我上的课程 <i class="im-table2"></i></a>
                 <ul class="nav sub">
                     {% for c in courses %}
-                        <li><a href="forms.html"><i class="en-arrow-right7"></i> {{ c.name }}</a></li>
+                        <li><a href="/teacher/coursedetail?id={{ c.ID }}"><i class="en-arrow-right7"></i> {{ c.name }}</a></li>
                     {% endfor %}
                 </ul>
             </li>

@@ -24,8 +24,8 @@ def loginstu(request):  # 登录
     print(a)
     print(b)
     cursor = connection.cursor()
-    sql = "select * from Student where ID='{0}' and Password='{1}'".format(a, b)
-    cursor.execute(sql)
+    sql = "select * from Student where ID=%s and Password=%s"
+    cursor.execute(sql,(a,b))
     c = cursor.fetchall()
     if len(c) != 0:
         result['ifok'] = 'true'
@@ -44,8 +44,8 @@ def loginteacher(request):  # 登录
     print(a)
     print(b)
     cursor = connection.cursor()
-    sql = "select * from Teacher where ID='{0}' and Password='{1}'".format(a, b)
-    cursor.execute(sql)
+    sql = "select * from Teacher where ID=%s and Password=%s"
+    cursor.execute(sql,(a,b))
     c = cursor.fetchall()
     print(c)
     if len(c) != 0:
@@ -62,7 +62,7 @@ def checkstu(request):  # 在页面中使用ajax检查是否账号已经注册�
     if a == "":
         return HttpResponse(json.dumps(l))
     cursor = connection.cursor()
-    cursor.execute("select ID from Student where ID=" + a)
+    cursor.execute("select ID from Student where ID=%s",(a,))
     b = cursor.fetchall()
     if len(b) == 0:
         l['ifok'] = 'true'
@@ -77,8 +77,8 @@ def checkteacher(request):  # 在页面中使用ajax检查是否账号已经注�
     if a == "":
         return HttpResponse(json.dumps(l))
     cursor = connection.cursor()
-    sql = "select ID from Teacher where ID='{0}'".format(a)
-    cursor.execute(sql)
+    sql = "select ID from Teacher where ID=%s"
+    cursor.execute(sql,(a,))
     b = cursor.fetchall()
     if len(b) == 0:
         l['ifok'] = 'true'
@@ -96,9 +96,9 @@ def regstu(request):  # 注册学生账号跳转到此
     # 密码使用md5加密储存,更加安全
     psw = md5(psw)
     cursor = connection.cursor()
-    sql = "insert into Student values('{0}','{1}','{2}','{3}')".format(id, name, psw, major)
+    sql = "insert into Student values(%s,%s,%s,%s)"
     try:
-        cursor.execute(sql)
+        cursor.execute(sql,(id, name, psw, major))
         result = {'ifok': 'true'}
     except BaseException:
         pass
@@ -113,9 +113,9 @@ def regteacher(request):  # 注册教师账号跳转到此
     # 密码使用md5加密储存,更加安全
     psw = md5(psw)
     cursor = connection.cursor()
-    sql = "insert into Teacher values('{0}','{1}','{2}')".format(id, name, psw)
+    sql = "insert into Teacher values(%s,%s,%s)"
     try:
-        cursor.execute(sql)
+        cursor.execute(sql,(id, name, psw))
         result = {'ifok': 'true'}
     except BaseException:
         pass

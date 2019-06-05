@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_stu_system',
         'USER':'root',
-        'PASSWORD':'root',
+        'PASSWORD':'rootroot',
         'HOST':'127.0.0.1',#默认本地
         'PORT':'3306'
     }

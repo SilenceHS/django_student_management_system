@@ -5,4 +5,5 @@ urlpatterns = [
     url(r'^getMyCourse$',teacher_views.getAllCourse),
     url(r'^addcourse.html$',teacher_views.addcourseview),
     url(r'^addcourse.action$',teacher_views.addcourseaction),
+    url(r'^coursedetail$',teacher_views.coursedetailview)
 ]
