@@ -1,0 +1,67 @@
+{% extends "teacher/coursedetailbase.html" %}
+
+{% block insidecourse %}
+{#    c为当前课程对象#}
+
+       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="window.location='index.html';">
+                            <!-- col-lg-3 start here -->
+                            <div class="tile red">
+                                <!-- tile start here -->
+                                <div class="tile-icon">
+                                    <i class="en-book2 color-white s64"></i>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="number countTo" data-from="0" data-to="10">10</div>
+                                    <h3>开始上课</h3>
+                                </div>
+                            </div>
+                            <!-- tile end here -->
+                        </div>
+
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <!-- col-lg-3 start here -->
+                            <div class="tile blue">
+                                <!-- tile start here -->
+                                <div class="tile-icon">
+                                    <i class="ec-users s64"></i>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="number countTo" data-from="0" data-to="107">107</div>
+                                    <h3>学生数</h3>
+                                </div>
+                            </div>
+                            <!-- tile end here -->
+                        </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <!-- col-lg-3 start here -->
+                            <div class="tile green">
+                                <!-- tile start here -->
+                                <div class="tile-icon">
+                                    <i class="im-clock color-white s64"></i>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="number countTo" data-from="0" data-to="17">17</div>
+                                    <h3>考勤次数</h3>
+                                </div>
+                            </div>
+                            <!-- tile end here -->
+                        </div>
+
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <!-- col-lg-3 start here -->
+                            <div class="tile pink">
+                                <!-- tile start here -->
+                                <div class="tile-icon">
+                                    <i class="ec-cog s64"></i>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="number countTo" data-from="0" data-to="5"></div>
+                                    <h3>课程设置</h3>
+                                </div>
+                            </div>
+                            <!-- tile end here -->
+                        </div>
+{% endblock %}
