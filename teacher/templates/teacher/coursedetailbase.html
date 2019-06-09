@@ -1,0 +1,31 @@
+{% extends "teacher/base.html" %}
+{% block im-table2 %}
+    <li class="hasSub">
+               <a href="#" class="expand active-state"><i class="en-arrow-down5 sideNav-arrow" style="transform: rotate(-180deg);"></i>  我上的课程 <i class="im-table2"></i></a>
+
+                <ul class="nav sub show" style="display: block;">
+
+                    {% for c in courses %}
+                        {% if nowclick == c.ID %}
+                        <li><a href="/teacher/coursedetail?id={{ c.ID }}" class="active"><i class="en-feather"></i> {{ c.name }}</a></li>
+
+                        {% else %}
+                            <li><a href="/teacher/coursedetail?id={{ c.ID }}"><i class="en-feather"></i> {{ c.name }}</a></li>
+                        {% endif %}
+
+                    {% endfor %}
+                </ul>
+
+            </li>
+{% endblock %}
+{% block main %}
+    {% for c in courses %}
+        {% if c.ID == nowclick %}
+
+            {% block insidecourse %}
+
+            {% endblock %}
+
+        {% endif %}
+    {% endfor %}
+{% endblock %}

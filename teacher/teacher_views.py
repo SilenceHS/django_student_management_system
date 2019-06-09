@@ -50,8 +50,9 @@ def addcourseaction(request):
     return redirect('/teacher/index.html')
 
 def coursedetailview(request):
-    request.GET['id']
-    return render()
+    adict=get_teacher_dict(request)
+    adict['nowclick']=int(request.GET['id'])
+    return render(request,'teacher/courseinfo.html',adict)
 def addcourseview(request):
     return render(request, 'teacher/addcourse.html',get_teacher_dict(request))
 
