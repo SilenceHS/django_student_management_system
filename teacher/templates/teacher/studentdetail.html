@@ -1,0 +1,44 @@
+{% extends "teacher/courseinfo.html" %}
+
+{% block table %}
+    <div class="row">
+        <div class="col-lg-12 ">
+            <!-- col-lg-6 start here -->
+            <div class="panel panel-default toggle">
+                <!-- Start .panel -->
+                <div class="panel-heading">
+                    <h4 class="panel-title">成绩统计</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped ">
+                        <thead>
+                        <tr>
+                            <th class="per5">
+                                #
+                            </th>
+                            <th class="per15">学号</th>
+                            <th class="per15">姓名</th>
+                            <th class="per15">出勤次数</th>
+                            <th class="per15">老师提问次数</th>
+                            <th class="per15">提问总分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in student %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.ID}}</td>
+                                <td>{{ s.name}}</td>
+                                <td>{{ s.pcount}}</td>
+                                <td>{{ s.qcount}}</td>
+                                <td>{{ s.qscore}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- End .panel -->
+        </div>
+    </div>
+{% endblock %}

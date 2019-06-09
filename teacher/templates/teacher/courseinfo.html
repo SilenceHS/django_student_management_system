@@ -1,67 +1,91 @@
 {% extends "teacher/coursedetailbase.html" %}
 
 {% block insidecourse %}
-{#    c为当前课程对象#}
+    {#    c为当前课程对象#}
 
-       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="window.location='index.html';">
-                            <!-- col-lg-3 start here -->
-                            <div class="tile red">
-                                <!-- tile start here -->
-                                <div class="tile-icon">
-                                    <i class="en-book2 color-white s64"></i>
-                                </div>
-                                <div class="tile-content">
-                                    <div class="number countTo" data-from="0" data-to="10">10</div>
-                                    <h3>开始上课</h3>
-                                </div>
-                            </div>
-                            <!-- tile end here -->
-                        </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
+        <!-- col-lg-3 start here -->
+        <div class="tile red" style="height: 106px">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="en-book2 color-white s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">开始上课</h3>
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px" onclick="showDetail({{ c.ID }})">
+        <!-- col-lg-3 start here -->
+        <div class="tile pink" style="height: 106px">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="ec-cog s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">删除该课程</h3>
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <!-- col-lg-3 start here -->
-                            <div class="tile blue">
-                                <!-- tile start here -->
-                                <div class="tile-icon">
-                                    <i class="ec-users s64"></i>
-                                </div>
-                                <div class="tile-content">
-                                    <div class="number countTo" data-from="0" data-to="107">107</div>
-                                    <h3>学生数</h3>
-                                </div>
-                            </div>
-                            <!-- tile end here -->
-                        </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="window.location='studentdetail?id={{ c.ID }}';">
+        <!-- col-lg-3 start here -->
+        <div class="tile blue">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="ec-users s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">学生成绩统计</h3>
+                <div class="number countTo" data-from="0" data-to="{{ studentcount }}">{{ studentcount }}</div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <!-- col-lg-3 start here -->
-                            <div class="tile green">
-                                <!-- tile start here -->
-                                <div class="tile-icon">
-                                    <i class="im-clock color-white s64"></i>
-                                </div>
-                                <div class="tile-content">
-                                    <div class="number countTo" data-from="0" data-to="17">17</div>
-                                    <h3>考勤次数</h3>
-                                </div>
-                            </div>
-                            <!-- tile end here -->
-                        </div>
-
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
 
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <!-- col-lg-3 start here -->
-                            <div class="tile pink">
-                                <!-- tile start here -->
-                                <div class="tile-icon">
-                                    <i class="ec-cog s64"></i>
-                                </div>
-                                <div class="tile-content">
-                                    <div class="number countTo" data-from="0" data-to="5"></div>
-                                    <h3>课程设置</h3>
-                                </div>
-                            </div>
-                            <!-- tile end here -->
-                        </div>
+        <!-- col-lg-3 start here -->
+        <div class="tile green">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="im-clock color-white s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">考勤次数</h3>
+                <div class="number countTo" data-from="0" data-to="17">17</div>
+
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
+{% block table %}
+
 {% endblock %}
+
+
+    <script>
+        function showDetail(data1) {
+            var url = "delete.action";
+            var tempForm = document.createElement("form");
+            tempForm.id = "tempForm1";
+            tempForm.method = "post";
+            tempForm.action = url;
+            //tempForm.target="_blank"; //打开新页面
+            var hideInput1 = document.createElement("input");
+            hideInput1.type = "hidden";
+            hideInput1.name = "opid"; //后台要接受这个参数来取值
+            hideInput1.value = data1; //后台实际取到的值
+            tempForm.appendChild(hideInput1);
+            //将tempForm 表单添加到 documentbody之后
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+            document.body.removeChild(tempForm);
+        }
+    </script>
+{% endblock %}
+
+
