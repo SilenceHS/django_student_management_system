@@ -1,5 +1,6 @@
 import os
-
+import time
+from django.utils.http import urlquote
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db import connection
@@ -8,7 +9,8 @@ import json
 # Create your views here.
 from python_end.Student import Student
 from python_end.Course import Course
-
+from django.utils.encoding import escape_uri_path
+import os
 #打包返回教师信息的方法
 def get_teacher_dict(request):
     teacherid = request.session.get('teacherid')
@@ -16,6 +18,34 @@ def get_teacher_dict(request):
     course = getAllCourse(request)
     return {'teacherid':teacherid,'teachername':teachername,"courses":course}
 
+
+def get_students(request):
+    adict = get_teacher_dict(request)
+    adict['nowclick'] = int(request.GET['id'])
+    cursor = connection.cursor()
+    sql = "SELECT count(*) FROM `student-course` where course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    c = cursor.fetchall()
+    adict['studentcount'] = int(c[0][0])
+    students = []
+    sql = "SELECT * FROM `student-course` where course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    c = cursor.fetchall()
+    adict['list'] = [int(x) for x in range(1, len(c))]
+    sql = "select count(*) from `participation`,`student-participation` where `participation`.id=`student-participation`.participation_id " \
+          "and participation.course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    d = cursor.fetchall()
+    for i in range(len(c)):
+        sql = "select count(*),sum(score) from `student-course`,`course-student` where `student-course`.id=`course-student`.course_selectID and " \
+              "`student-course`.course_id=%s and  `student-course`.student_id=%s"
+        cursor.execute(sql, (request.GET['id'], c[i][1]))
+        e = cursor.fetchall()
+        s = Student(c[i][1], c[i][2], d[0][0], e[0][0], e[0][1])
+        students.append(s)
+    students = sorted(students, key=lambda x: int(x.ID))
+    adict['student'] = students
+    return adict
 ######################################
 
 def index(request):
@@ -72,35 +102,35 @@ def deletecourse(request):
     cursor.execute(sql2, (request.POST['opid']))
     return redirect('index.html')
 def studentdetailview(request):
-    adict = get_teacher_dict(request)
-    adict['nowclick'] = int(request.GET['id'])
+    return render(request, 'teacher/studentdetail.html', get_students(request))
+def downstu(request):
+    filename = time.strftime("%Y-%m-%d-")
+    id=request.GET['id']
+    teacher_id=request.session['teacherid']
     cursor = connection.cursor()
-    sql = "SELECT count(*) FROM `student-course` where course_id=%s"
-    cursor.execute(sql, request.GET['id'])
+    sql = "select name from Course where teacher_id= %s and id=%s"
+    cursor.execute(sql,(teacher_id,id))
     c = cursor.fetchall()
-    adict['studentcount'] = int(c[0][0])
-    students=[]
-    sql = "SELECT * FROM `student-course` where course_id=%s"
-    cursor.execute(sql, request.GET['id'])
-    c = cursor.fetchall()
-
-
-    adict['list'] = [int(x) for x in range(1, len(c))]
-    sql = "select count(*) from `participation`,`student-participation` where `participation`.id=`student-participation`.participation_id " \
-          "and participation.course_id=%s"
-    cursor.execute(sql, request.GET['id'])
-    d=cursor.fetchall()
-
-
-    for i in range(len(c)):
-        sql = "select count(*),sum(score) from `student-course`,`course-student` where `student-course`.id=`course-student`.course_selectID and " \
-              "`student-course`.course_id=%s and  `student-course`.student_id=%s"
-        cursor.execute(sql, (request.GET['id'],c[i][1]))
-        e = cursor.fetchall()
-        s=Student(c[i][1],c[i][2],d[0][0],e[0][0],e[0][1])
-        students.append(s)
-    students=sorted(students,key=lambda x:int(x.ID))
-    adict['student']=students
-    return render(request, 'teacher/studentdetail.html', adict)
-
-
+    filename+=c[0][0]+"成绩汇总.xlsx"
+    wb = openpyxl.Workbook()
+    sheet = wb.active
+    sheet.cell(1,1).value='学号'
+    sheet.cell(1, 2).value = '姓名'
+    sheet.cell(1, 3).value = '出勤次数'
+    sheet.cell(1, 4).value = '老师提问次数'
+    sheet.cell(1, 5).value = '提问总分'
+    a=get_students(request)
+    students=a["student"]
+    for i in range(len(students)):
+        sheet.cell(i+2, 1).value = students[i].ID
+        sheet.cell(i+2, 2).value = students[i].name
+        sheet.cell(i+2, 3).value = students[i].pcount
+        sheet.cell(i+2, 4).value = students[i].qcount
+        sheet.cell(i+2, 5).value = students[i].qscore
+    wb.save("temp/"+filename)
+    with open('temp/'+filename, 'rb') as model_excel:
+        result = model_excel.read()
+    response = HttpResponse(result)
+    response['Content-Disposition'] = "attachment; filename*=utf-8''{}".format(escape_uri_path(filename))
+    os.remove("temp/"+filename)
+    return response
