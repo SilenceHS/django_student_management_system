@@ -8,5 +8,8 @@ urlpatterns = [
     url(r'^coursedetail$',teacher_views.coursedetailview),
     url(r'^delete.action$',teacher_views.deletecourse),
     url(r'^studentdetail$',teacher_views.studentdetailview),
-    url(r'^down_stufile$',teacher_views.downstu)
+    url(r'^down_stufile$',teacher_views.downstu),
+    url(r'^pardetail$',teacher_views.pardetailview),
+    url(r'^startclass$',teacher_views.start_class),
+    url(r'^endclass$',teacher_views.end_class),
 ]

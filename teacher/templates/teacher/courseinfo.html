@@ -2,8 +2,8 @@
 
 {% block insidecourse %}
     {#    c为当前课程对象#}
-
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px" onclick="window.location='startclass?id={{ c.ID }}';">
         <!-- col-lg-3 start here -->
         <div class="tile red" style="height: 106px">
             <!-- tile start here -->
@@ -47,7 +47,7 @@
         <!-- tile end here -->
     </div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"  onclick="window.location='pardetail?id={{ c.ID }}';">
         <!-- col-lg-3 start here -->
         <div class="tile green">
             <!-- tile start here -->
@@ -56,12 +56,13 @@
             </div>
             <div class="tile-content">
                 <h3 style=" font-size:25px">考勤次数</h3>
-                <div class="number countTo" data-from="0" data-to="17">17</div>
+                <div class="number countTo" data-from="0" data-to="{{ partcount }}">{{ partcount }}</div>
 
             </div>
         </div>
         <!-- tile end here -->
     </div>
+</div>
 {% block table %}
 
 {% endblock %}

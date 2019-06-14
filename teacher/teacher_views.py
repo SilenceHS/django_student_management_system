@@ -9,6 +9,7 @@ import json
 # Create your views here.
 from python_end.Student import Student
 from python_end.Course import Course
+from python_end.Participation import Participation
 from django.utils.encoding import escape_uri_path
 import os
 #打包返回教师信息的方法
@@ -18,7 +19,16 @@ def get_teacher_dict(request):
     course = getAllCourse(request)
     return {'teacherid':teacherid,'teachername':teachername,"courses":course}
 
-
+def get_now_class(request):
+    cursor = connection.cursor()
+    teacherid = request.session.get('teacherid')
+    sql="select * from `now-class`,`Course` where start_time is not null and end_time is null and `now-class`.course_id =Course.id and teacher_id=%s"
+    cursor.execute(sql,teacherid)
+    a=cursor.fetchall()
+    if len(a)==0:
+        return None
+    else:
+        return Course(a[0][1],a[0][6])
 def get_students(request):
     adict = get_teacher_dict(request)
     adict['nowclick'] = int(request.GET['id'])
@@ -32,19 +42,25 @@ def get_students(request):
     cursor.execute(sql, request.GET['id'])
     c = cursor.fetchall()
     adict['list'] = [int(x) for x in range(1, len(c))]
-    sql = "select count(*) from `participation`,`student-participation` where `participation`.id=`student-participation`.participation_id " \
-          "and participation.course_id=%s"
-    cursor.execute(sql, request.GET['id'])
-    d = cursor.fetchall()
     for i in range(len(c)):
         sql = "select count(*),sum(score) from `student-course`,`course-student` where `student-course`.id=`course-student`.course_selectID and " \
               "`student-course`.course_id=%s and  `student-course`.student_id=%s"
         cursor.execute(sql, (request.GET['id'], c[i][1]))
         e = cursor.fetchall()
+
+        sql = "select count(*) from `participation`,`student-participation` where `participation`.id=`student-participation`.participation_id " \
+              "and participation.course_id=%s and student_id=%s"
+        cursor.execute(sql, (request.GET['id'],c[i][1]))
+        d = cursor.fetchall()
+
         s = Student(c[i][1], c[i][2], d[0][0], e[0][0], e[0][1])
         students.append(s)
     students = sorted(students, key=lambda x: int(x.ID))
     adict['student'] = students
+    sql="select count(*) from Participation where end_date is not null and course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    sb=cursor.fetchall()
+    adict['partcount']=int(sb[0][0])
     return adict
 ######################################
 
@@ -52,8 +68,13 @@ def index(request):
     teacherid=request.session.get('teacherid')
     teachername=request.session.get('teachername')
     course=getAllCourse(request)
+    adict=get_teacher_dict(request)
+    if get_now_class(request) is not None:
+        adict['nowcourse']=get_now_class(request)
+    else:
+        adict['nowcourse'] =Course(-1,'无')
     if teacherid:
-        return render(request,'teacher/teacherhome.html',get_teacher_dict(request))
+        return render(request,'teacher/teacherhome.html',adict)
     else:
         return redirect('/index.html')
 def getAllCourse(request):
@@ -90,6 +111,11 @@ def coursedetailview(request):
     cursor.execute(sql,request.GET['id'])
     c = cursor.fetchall()
     adict['studentcount']=int(c[0][0])
+    sql="select count(*) from Participation where end_date is not null and course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    d=cursor.fetchall()
+    adict['partcount']=int(d[0][0])
+    print (adict)
     return render(request,'teacher/courseinfo.html',adict)
 def addcourseview(request):
     return render(request, 'teacher/addcourse.html',get_teacher_dict(request))
@@ -98,8 +124,15 @@ def deletecourse(request):
     cursor = connection.cursor()
     sql = "delete  FROM `student-course` where course_id=%s;"
     cursor.execute(sql,(request.POST['opid']))
-    sql2="delete  FROM `course` where id=%s;"
+
+    sql2 = "delete  FROM `Student-Participation` where participation_id in (select id from `Participation` where course_id=%s) ;"
     cursor.execute(sql2, (request.POST['opid']))
+
+    sql3 = "delete  FROM `Participation` where course_id=%s;"
+    cursor.execute(sql3, (request.POST['opid']))
+
+    sql4="delete  FROM `course` where id=%s;"
+    cursor.execute(sql4, (request.POST['opid']))
     return redirect('index.html')
 def studentdetailview(request):
     return render(request, 'teacher/studentdetail.html', get_students(request))
@@ -134,3 +167,30 @@ def downstu(request):
     response['Content-Disposition'] = "attachment; filename*=utf-8''{}".format(escape_uri_path(filename))
     os.remove("temp/"+filename)
     return response
+
+def pardetailview(request):
+    id = request.GET['id']
+    cursor = connection.cursor()
+    sql='select * from Participation where end_date is not null and course_id=%s'
+    cursor.execute(sql,id)
+    c=cursor.fetchall()
+
+    s='select count(*) from `Student-Course` where course_id=%s'
+    cursor.execute(s,id)
+    all=cursor.fetchall()
+    ps=[]
+    for i in range(len(c)):
+        sql2 = 'select count(*) from `Student-Participation` where participation_id=%s'
+        cursor.execute(sql2, c[i][0])
+        d = cursor.fetchall()
+        ps.append(Participation(c[i][2],c[i][3],d[0][0],int(d[0][0])/int(all[0][0])))
+    adict=get_students(request)
+    adict['par']=ps
+    return render(request, 'teacher/participation.html', adict)
+
+def start_class(request):
+    if get_now_class(request):
+        sql='insert into now_class values(%s,now())'
+    pass
+def end_class(request):
+    pass

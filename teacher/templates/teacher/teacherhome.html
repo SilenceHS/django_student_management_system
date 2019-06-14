@@ -1,8 +1,85 @@
 {% extends "teacher/base.html" %}
 {% block main %}
+    {% if nowcourse.ID == -1  %}
             <div class="row">
                 <!-- Start .row -->
                 <div style="padding-top:15%" align="center"><img src="/static/img2/avatars/empty.png"><br/>空空如也~
-                    </div>
+                </div>
             </div>
+            <div class="row">
+    {% else %}
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px" onclick="window.location.href='startparaction?id={{ nowcourse.ID }}'">
+        <!-- col-lg-3 start here -->
+        <div class="tile red" style="height: 106px">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="en-book2 color-white s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">开始签到</h3>
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
+        <!-- col-lg-3 start here -->
+        <div class="tile pink" style="height: 106px">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="ec-cog s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">随机点名</h3>
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="window.location.href='endclass?id={{ nowcourse.ID }}'">
+        <!-- col-lg-3 start here -->
+        <div class="tile blue">
+            <!-- tile start here -->
+            <div class="tile-icon">
+                <i class="ec-users s64"></i>
+            </div>
+            <div class="tile-content">
+                <h3 style=" font-size:25px">结束课程</h3>
+                <div class="number countTo" data-from="0" data-to="{{ studentcount }}">{{ studentcount }}</div>
+
+            </div>
+        </div>
+        <!-- tile end here -->
+    </div>
+    {% endif %}
+
+</div>
+{% block table %}
+
+{% endblock %}
+
+
+    <script>
+        function showDetail(data1) {
+            var url = "delete.action";
+            var tempForm = document.createElement("form");
+            tempForm.id = "tempForm1";
+            tempForm.method = "post";
+            tempForm.action = url;
+            //tempForm.target="_blank"; //打开新页面
+            var hideInput1 = document.createElement("input");
+            hideInput1.type = "hidden";
+            hideInput1.name = "opid"; //后台要接受这个参数来取值
+            hideInput1.value = data1; //后台实际取到的值
+            tempForm.appendChild(hideInput1);
+            //将tempForm 表单添加到 documentbody之后
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+            document.body.removeChild(tempForm);
+        }
+    </script>
+
+
+
 {% endblock %}
