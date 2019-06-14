@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_stu_system',
         'USER':'root',
-        'PASSWORD':'root',
+        'PASSWORD':'rootroot',
         'HOST':'127.0.0.1',#默认本地
         'PORT':'3306'
     }
@@ -114,13 +114,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
+
+TIME_ZONE = 'Asia/Shanghai'
 
 
 # Static files (CSS, JavaScript, Images)

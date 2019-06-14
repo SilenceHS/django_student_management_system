@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime
 from django.utils.http import urlquote
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -28,7 +29,7 @@ def get_now_class(request):
     if len(a)==0:
         return None
     else:
-        return Course(a[0][1],a[0][6])
+        return Course(a[0][1],a[0][6]),a[0][2]
 def get_students(request):
     adict = get_teacher_dict(request)
     adict['nowclick'] = int(request.GET['id'])
@@ -70,7 +71,8 @@ def index(request):
     course=getAllCourse(request)
     adict=get_teacher_dict(request)
     if get_now_class(request) is not None:
-        adict['nowcourse']=get_now_class(request)
+        adict['nowcourse'],start_time=get_now_class(request)
+        adict['timestamp']=int(time.time())-int(time.mktime(start_time.timetuple()))
     else:
         adict['nowcourse'] =Course(-1,'无')
     if teacherid:
