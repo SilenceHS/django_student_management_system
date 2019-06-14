@@ -22,7 +22,7 @@ def get_teacher_dict(request):
 def get_now_class(request):
     cursor = connection.cursor()
     teacherid = request.session.get('teacherid')
-    sql="select * from `now-class`,`Course` where start_time is not null and end_time is null and `now-class`.course_id =Course.id and teacher_id=%s"
+    sql="select * from `now-course`,`Course` where start_date is not null and end_date is null and `now-course`.course_id =Course.id and teacher_id=%s"
     cursor.execute(sql,teacherid)
     a=cursor.fetchall()
     if len(a)==0:
@@ -189,8 +189,20 @@ def pardetailview(request):
     return render(request, 'teacher/participation.html', adict)
 
 def start_class(request):
-    if get_now_class(request):
-        sql='insert into now_class values(%s,now())'
-    pass
+    if not get_now_class(request):
+        cursor = connection.cursor()
+        id=request.GET['id']
+        sql='insert into `now-course` (course_id,start_date)values(%s,now())'
+        cursor.execute(sql, id)
+        return redirect('/teacher/index.html')
+    else:
+        return redirect('/teacher/index.html')
 def end_class(request):
-    pass
+    if get_now_class(request):
+        cursor = connection.cursor()
+        id = request.GET['id']
+        sql = 'update `now-course` set end_date=now() where course_id=%s and end_date is null'
+        cursor.execute(sql, id)
+        return redirect('/teacher/index.html')
+    else:
+        return redirect('/teacher/index.html')
