@@ -13,6 +13,14 @@ from python_end.Course import Course
 from python_end.Participation import Participation
 from django.utils.encoding import escape_uri_path
 import os
+def get_participation_status(request):
+    cursor = connection.cursor()
+    sql="select * from participation where start_date is not null and end_date is null and course_id in (select id from course where teacher_id=%s)"
+    cursor.execute(sql,request.session.get('teacherid'))
+    a=cursor.fetchall()
+    if len(a)==0:
+        return -1
+    return 1
 #打包返回教师信息的方法
 def get_teacher_dict(request):
     teacherid = request.session.get('teacherid')
@@ -70,6 +78,7 @@ def index(request):
     teachername=request.session.get('teachername')
     course=getAllCourse(request)
     adict=get_teacher_dict(request)
+    adict['participationstatus']=get_participation_status(request)
     if get_now_class(request) is not None:
         adict['nowcourse'],start_time=get_now_class(request)
         adict['timestamp']=int(time.time())-int(time.mktime(start_time.timetuple()))
@@ -124,8 +133,12 @@ def addcourseview(request):
 
 def deletecourse(request):
     cursor = connection.cursor()
-    sql = "delete  FROM `student-course` where course_id=%s;"
-    cursor.execute(sql,(request.POST['opid']))
+
+    sql="delete FROM `course-student` where course_selectID in(select id from `student-course` where course_id=%s)"
+    cursor.execute(sql, (request.POST['opid']))
+
+    sql1 = "delete  FROM `student-course` where course_id=%s;"
+    cursor.execute(sql1,(request.POST['opid']))
 
     sql2 = "delete  FROM `Student-Participation` where participation_id in (select id from `Participation` where course_id=%s) ;"
     cursor.execute(sql2, (request.POST['opid']))
@@ -135,6 +148,9 @@ def deletecourse(request):
 
     sql4="delete  FROM `course` where id=%s;"
     cursor.execute(sql4, (request.POST['opid']))
+
+    sql5 = "delete FROM `now-course` where course_id=%s"
+    cursor.execute(sql5, (request.POST['opid']))
     return redirect('index.html')
 def studentdetailview(request):
     return render(request, 'teacher/studentdetail.html', get_students(request))
@@ -208,3 +224,15 @@ def end_class(request):
         return redirect('/teacher/index.html')
     else:
         return redirect('/teacher/index.html')
+def start_participation(request):
+    cursor = connection.cursor()
+    sql="insert into participation (course_id,start_date) values(%s,now())"
+    cursor.execute(sql,request.GET['id'])
+    return redirect('/teacher/index.html')
+def end_participation(request):
+    cursor = connection.cursor()
+    sql = "update participation set end_date=now() where course_id=%s and end_date is null and start_date is not null"
+    cursor.execute(sql, request.GET['id'])
+    return redirect('/teacher/index.html')
+def coursewareview(request):
+    return render(request, 'teacher/courseware.html', get_students(request))

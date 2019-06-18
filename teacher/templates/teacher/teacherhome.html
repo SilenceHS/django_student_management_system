@@ -16,6 +16,7 @@
                 <h3 class="panel-title">{{ nowcourse.name }}</h3>
             </div>
                     <div class="panel-body">
+                        {% if participationstatus == -1 %}
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
                          onclick="window.location.href='startparaction?id={{ nowcourse.ID }}'">
                         <!-- col-lg-3 start here -->
@@ -30,7 +31,22 @@
                         </div>
                         <!-- tile end here -->
                     </div>
-
+                            {% elif participationstatus == 1 %}
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
+                         onclick="window.location.href='endparaction?id={{ nowcourse.ID }}'">
+                        <!-- col-lg-3 start here -->
+                        <div class="tile red" style="height: 106px">
+                            <!-- tile start here -->
+                            <div class="tile-icon">
+                                <i class="en-book2 color-white s64"></i>
+                            </div>
+                            <div class="tile-content">
+                                <h3 style=" font-size:25px">停止签到</h3>
+                            </div>
+                        </div>
+                        <!-- tile end here -->
+                    </div>
+                        {% endif %}
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
                         <!-- col-lg-3 start here -->
                         <div class="tile pink" style="height: 106px">

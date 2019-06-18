@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^pardetail$',teacher_views.pardetailview),
     url(r'^startclass$',teacher_views.start_class),
     url(r'^endclass$',teacher_views.end_class),
+    url(r'^startparaction$',teacher_views.start_participation),
+    url(r'^endparaction$',teacher_views.end_participation),
+    url(r'^courseware$', teacher_views.coursewareview),
 ]
