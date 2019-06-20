@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^startparaction$',teacher_views.start_participation),
     url(r'^endparaction$',teacher_views.end_participation),
     url(r'^courseware$', teacher_views.coursewareview),
+    url(r'^upload$', teacher_views.upload),
+    url(r'^deleteware$', teacher_views.deleteware),
 ]

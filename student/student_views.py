@@ -8,6 +8,6 @@ def index(request):
     stuid = request.session.get('stuid')
     stuname=request.session.get('stuname')
     if stuid:
-        return render(request,'student/index.html',{'stuid':stuid,'stuname':stuname})
+        return render(request,'student/base.html',{'stuid':stuid,'stuname':stuname})
     else:
         return redirect('/index.html')

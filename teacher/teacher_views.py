@@ -13,6 +13,15 @@ from python_end.Course import Course
 from python_end.Participation import Participation
 from django.utils.encoding import escape_uri_path
 import os
+def get_filename(request):
+    adict = get_students(request)
+    names=[]
+    for i, j, k in os.walk(request.session.get('teacherid')):
+        adict['names']=k
+        adict['warecount']=len(k)
+    print(adict)
+    return adict
+
 def get_participation_status(request):
     cursor = connection.cursor()
     sql="select * from participation where start_date is not null and end_date is null and course_id in (select id from course where teacher_id=%s)"
@@ -40,26 +49,26 @@ def get_now_class(request):
         return Course(a[0][1],a[0][6]),a[0][2]
 def get_students(request):
     adict = get_teacher_dict(request)
-    adict['nowclick'] = int(request.GET['id'])
+    adict['nowclick'] = int(request.session.get('cid'))
     cursor = connection.cursor()
     sql = "SELECT count(*) FROM `student-course` where course_id=%s"
-    cursor.execute(sql, request.GET['id'])
+    cursor.execute(sql, request.session.get('cid'))
     c = cursor.fetchall()
     adict['studentcount'] = int(c[0][0])
     students = []
     sql = "SELECT * FROM `student-course` where course_id=%s"
-    cursor.execute(sql, request.GET['id'])
+    cursor.execute(sql, request.session.get('cid'))
     c = cursor.fetchall()
     adict['list'] = [int(x) for x in range(1, len(c))]
     for i in range(len(c)):
         sql = "select count(*),sum(score) from `student-course`,`course-student` where `student-course`.id=`course-student`.course_selectID and " \
               "`student-course`.course_id=%s and  `student-course`.student_id=%s"
-        cursor.execute(sql, (request.GET['id'], c[i][1]))
+        cursor.execute(sql, (request.session.get('cid'), c[i][1]))
         e = cursor.fetchall()
 
         sql = "select count(*) from `participation`,`student-participation` where `participation`.id=`student-participation`.participation_id " \
               "and participation.course_id=%s and student_id=%s"
-        cursor.execute(sql, (request.GET['id'],c[i][1]))
+        cursor.execute(sql, (request.session.get('cid'),c[i][1]))
         d = cursor.fetchall()
 
         s = Student(c[i][1], c[i][2], d[0][0], e[0][0], e[0][1])
@@ -67,7 +76,7 @@ def get_students(request):
     students = sorted(students, key=lambda x: int(x.ID))
     adict['student'] = students
     sql="select count(*) from Participation where end_date is not null and course_id=%s"
-    cursor.execute(sql, request.GET['id'])
+    cursor.execute(sql, request.session.get('cid'))
     sb=cursor.fetchall()
     adict['partcount']=int(sb[0][0])
     return adict
@@ -126,6 +135,7 @@ def coursedetailview(request):
     cursor.execute(sql, request.GET['id'])
     d=cursor.fetchall()
     adict['partcount']=int(d[0][0])
+    request.session['cid']=request.GET['id']
     print (adict)
     return render(request,'teacher/courseinfo.html',adict)
 def addcourseview(request):
@@ -235,4 +245,15 @@ def end_participation(request):
     cursor.execute(sql, request.GET['id'])
     return redirect('/teacher/index.html')
 def coursewareview(request):
-    return render(request, 'teacher/courseware.html', get_students(request))
+    return render(request, 'teacher/courseware.html', get_filename(request))
+def upload(request):
+    file = request.FILES.get('file')
+    if not os.path.exists(request.session.get('teacherid')+"/"):
+        os.makedirs(request.session.get('teacherid')+"/")
+    with open(request.session.get('teacherid')+"/"+file.name,'wb') as f:
+        for i in file.readlines():
+            f.write(i)
+    return redirect('/teacher/courseware?id='+request.session.get('cid'))
+def deleteware(request):
+    os.remove(request.session.get('teacherid') + "/"+request.GET['name'])
+    return redirect('/teacher/courseware?id=' + request.session.get('cid'))
