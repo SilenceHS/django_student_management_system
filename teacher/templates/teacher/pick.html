@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>请学号{{ student.id }}的{{ student.name }}同学回答问题</h2>
+<form action="setscore">
+<h2>得分</h2>
+    <input name="score" type="text">
+    <input name="sid" type="hidden" value="{{ student.sid }}">
+<input type="submit" value="确定">
+</form>
+</body>
+</html>

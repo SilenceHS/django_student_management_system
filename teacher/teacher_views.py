@@ -1,4 +1,5 @@
 import os
+import random
 import time
 from datetime import datetime
 from django.utils.http import urlquote
@@ -88,7 +89,12 @@ def index(request):
     course=getAllCourse(request)
     adict=get_teacher_dict(request)
     adict['participationstatus']=get_participation_status(request)
+    try:
+        a,b=get_now_class(request)
+    except:
+        pass
     if get_now_class(request) is not None:
+        request.session['cid']=a.ID
         adict['nowcourse'],start_time=get_now_class(request)
         adict['timestamp']=int(time.time())-int(time.mktime(start_time.timetuple()))
     else:
@@ -257,3 +263,88 @@ def upload(request):
 def deleteware(request):
     os.remove(request.session.get('teacherid') + "/"+request.GET['name'])
     return redirect('/teacher/courseware?id=' + request.session.get('cid'))
+def downware(request):
+    file = open(request.session.get('teacherid')+"/"+request.GET['name'], 'rb')
+    response = HttpResponse(file)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = "attachment;filename*=utf-8''{}".format(escape_uri_path(request.GET['name']))
+    return response
+def classware(request):
+    teacherid = request.session.get('teacherid')
+    teachername = request.session.get('teachername')
+    course = getAllCourse(request)
+    a=get_filename(request)
+    adict = get_teacher_dict(request)
+    adict.update(a)
+    adict['participationstatus'] = get_participation_status(request)
+    adict['index']='active'
+    if get_now_class(request) is not None:
+        adict['nowcourse'], start_time = get_now_class(request)
+        adict['timestamp'] = int(time.time()) - int(time.mktime(start_time.timetuple()))
+    else:
+        adict['nowcourse'] = Course(-1, '无')
+    if teacherid:
+        return render(request, 'teacher/downware.html', adict)
+    else:
+        return redirect('/index.html')
+def randpick(request):
+    cursor = connection.cursor()
+    sql = "SELECT * FROM `student-course` where course_id=%s"
+    cursor.execute(sql, request.GET['id'])
+    a=cursor.fetchall()
+    alist=[]
+    for i in a:
+        s={'sid':i[0],'id':i[1],'name':i[2],'cid':i[3]}
+        alist.append(s)
+    person=random.sample(alist, 1)
+    print(person)
+    return render(request,'teacher/pick.html',{'student':person[0]})
+def setscore(request):
+    print("成绩"+request.GET['score'])
+    print("选课编号"+request.GET['sid'])
+    cursor = connection.cursor()
+    sql = "insert into  django_stu_system.`course-student` values(%s,now(),%s)";
+    cursor.execute(sql, (request.GET['sid'],request.GET['score']))
+    return redirect('/teacher/index.html')
+def getquestion(request):
+    cid = request.GET['id']
+    cursor = connection.cursor()
+    sql = "select * from question where course_id=%s"
+    cursor.execute(sql, cid)
+    a = cursor.fetchall()
+    alist = []
+    for i in a:
+        sql2 = "select name from student where id=%s"
+        cursor.execute(sql2, i[1])
+        b = cursor.fetchall()
+        adict = {'qid': i[0], 'name': b[0][0], 'content': i[3]}
+        alist.append(adict)
+
+    teacherid = request.session.get('teacherid')
+    teachername = request.session.get('teachername')
+    course = getAllCourse(request)
+    a = get_filename(request)
+    adict = get_teacher_dict(request)
+    adict['questions']=alist
+    adict.update(a)
+    adict['participationstatus'] = get_participation_status(request)
+    adict['index'] = 'active'
+    if get_now_class(request) is not None:
+        adict['nowcourse'], start_time = get_now_class(request)
+        adict['timestamp'] = int(time.time()) - int(time.mktime(start_time.timetuple()))
+    else:
+        adict['nowcourse'] = Course(-1, '无')
+    if teacherid:
+        return render(request, 'teacher/getquestion.html', adict)
+    else:
+        return redirect('/index.html')
+def deletequestion(request):
+    qid=request.GET['qid']
+    cursor = connection.cursor()
+    sql = "delete  from question where id=%s"
+    cursor.execute(sql, qid)
+    return redirect('/teacher/getquestion?id='+str(request.session.get('cid')))
+
+
+
+

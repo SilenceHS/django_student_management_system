@@ -17,4 +17,11 @@ urlpatterns = [
     url(r'^courseware$', teacher_views.coursewareview),
     url(r'^upload$', teacher_views.upload),
     url(r'^deleteware$', teacher_views.deleteware),
+    url(r'^downware$', teacher_views.downware),
+    url(r'^classware$', teacher_views.classware),
+    url(r'^randpick$', teacher_views.randpick),
+    url(r'^setscore$', teacher_views.setscore),
+    url(r'^getquestion$', teacher_views.getquestion),
+    url(r'^deletequestion$', teacher_views.deletequestion),
+
 ]

@@ -47,38 +47,41 @@
                         <!-- tile end here -->
                     </div>
                         {% endif %}
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
+                         onclick="window.location.href='randpick?id={{ nowcourse.ID }}'">
                         <!-- col-lg-3 start here -->
-                        <div class="tile pink" style="height: 106px">
+                        <div class="tile blue" style="height: 106px">
+                            <!-- tile start here -->
+                            <div class="tile-icon">
+                                <i class="ec-users s64"></i>
+                            </div>
+                            <div class="tile-content">
+                                <h3 style=" font-size:25px">随机提问</h3>
+                            </div>
+                        </div>
+                        <!-- tile end here -->
+                    </div>
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
+      onclick="window.location.href='getquestion?id={{ nowcourse.ID }}'">
+                        <!-- col-lg-3 start here -->
+                        <div class="tile green" style="height: 106px">
                             <!-- tile start here -->
                             <div class="tile-icon">
                                 <i class="ec-cog s64"></i>
                             </div>
                             <div class="tile-content">
-                                <h3 style=" font-size:25px">随机点名</h3>
+                                <h3 style=" font-size:25px">接受提问</h3>
                             </div>
                         </div>
                         <!-- tile end here -->
                     </div>
-<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
+                             onclick="window.location.href='classware?id={{ nowcourse.ID }}'">
                         <!-- col-lg-3 start here -->
-                        <div class="tile pink" style="height: 106px">
+                        <div class="tile orange" style="height: 106px">
                             <!-- tile start here -->
                             <div class="tile-icon">
-                                <i class="ec-cog s64"></i>
-                            </div>
-                            <div class="tile-content">
-                                <h3 style=" font-size:25px">指定回答问题</h3>
-                            </div>
-                        </div>
-                        <!-- tile end here -->
-                    </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px">
-                        <!-- col-lg-3 start here -->
-                        <div class="tile pink" style="height: 106px">
-                            <!-- tile start here -->
-                            <div class="tile-icon">
-                                <i class="ec-cog s64"></i>
+                                <i class="ec-download s64"></i>
                             </div>
                             <div class="tile-content">
                                 <h3 style=" font-size:25px">下载课件</h3>
@@ -86,19 +89,16 @@
                         </div>
                         <!-- tile end here -->
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="height: 131px"
                          onclick="window.location.href='endclass?id={{ nowcourse.ID }}'">
                         <!-- col-lg-3 start here -->
-                        <div class="tile blue">
+                        <div class="tile teal" style="height: 106px">
                             <!-- tile start here -->
                             <div class="tile-icon">
-                                <i class="ec-users s64"></i>
+                                <i class="br-cancel s64"></i>
                             </div>
                             <div class="tile-content">
                                 <h3 style=" font-size:25px">结束课程</h3>
-                                <div class="number countTo" data-from="0"
-                                     data-to="{{ studentcount }}">{{ studentcount }}</div>
-
                             </div>
                         </div>
                         <!-- tile end here -->
